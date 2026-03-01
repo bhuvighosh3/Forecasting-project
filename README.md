@@ -408,20 +408,6 @@ electricity-forecasting/
 
 ---
 
-## 👥 Authors
-
-<div align="center">
-
-| | Name | Role |
-|:-:|------|------|
-| 👩‍💻 | **Afreen Sorathiya** | Data Pipeline · Clustering · Prophet Modelling |
-| 👩‍💻 | **Anamika Kumari Mishra** | SARIMA · LSTM · Model Evaluation |
-| 👩‍💻 | **Bhuvi Ghosh** | Feature Engineering · XGBoost · Reporting |
-
-</div>
-
----
-
 ## 📄 License
 
 This project is licensed under the MIT License. See [`LICENSE`](LICENSE) for details.
