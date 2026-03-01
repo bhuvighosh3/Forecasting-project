@@ -313,27 +313,6 @@ xychart-beta
 > 📌 **Bar = Prophet baseline · Line = Best deployed model**  
 > C1 shows SARIMA's 42% MAE reduction; C4 shows LSTM's 5× improvement.
 
-### Aggregation Size vs MAPE
-
-```mermaid
-quadrantChart
-    title Cluster Size vs Forecast Accuracy
-    x-axis "Few Clients" --> "Many Clients"
-    y-axis "High MAPE (worse)" --> "Low MAPE (better)"
-    quadrant-1 "Large & Accurate"
-    quadrant-2 "Small & Accurate"
-    quadrant-3 "Small & Inaccurate"
-    quadrant-4 "Large & Inaccurate"
-    C0 (317 clients): [0.90, 0.50]
-    C4 (40 clients): [0.70, 0.90]
-    C3 (9 clients): [0.40, 0.45]
-    C5 (2 clients): [0.15, 0.40]
-    C1 (1 client): [0.05, 0.60]
-    C2 (1 client): [0.05, 0.20]
-```
-
----
-
 ## 🚧 Challenges & Future Work
 
 ### Current Challenges
