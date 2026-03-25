@@ -1,5 +1,7 @@
 # VoltForecast AI - Second Deliverable
 
+**🔗 [Live Dashboard](https://share.streamlit.io/)** *(Replace with your actual Streamlit Cloud URL after deployment)*
+
 Welcome to the **VoltForecast AI** project! This repository contains a production-ready, natural language interface for electricity consumption forecasting. It leverages advanced clustering techniques, specialized forecasting models (Prophet, SARIMA, LSTM), and the **Anthropic Claude 3** LLM to map user queries to the correct data models dynamically.
 
 ## 🌟 Features
@@ -47,11 +49,46 @@ uv run streamlit run streamlit_app.py
 
 The application will be universally accessible at `http://localhost:8501`.
 
-## 🧠 System Architecture
+## 🏗️ System Architecture
+
+```mermaid
+graph TD
+    User([User]) -->|Natural Language Prompt| UI[Streamlit Frontend]
+    UI -->|Query String| Claude[Anthropic Claude 3 LLM]
+    Claude -->|Extracts JSON: client_id, period| Interface{Python Mapping Interface}
+    Interface -->|Lookup Client ID| Mapping[(client_mapping.json)]
+    Mapping -->|Returns Cluster ID| Interface
+    Interface -->|Dynamically Load Model| Models[(Pre-trained Models Directory)]
+    Models -->|Prophet / SARIMA / LSTM| Engine[Inference Engine]
+    Engine -->|yhat Forecast| UI
+    UI -->|Renders Area Chart| User
+```
 
 1.  **`train_final.py`**: Reads the raw data, applies PCA and KMeans clustering (K=6), and trains a distinct predictive model for each cluster. It also saves the `client_mapping.json` so individual clients can be mapped to their parent clusters.
 2.  **`llm_interface.py`**: The core bridge between natural language and the models. It sends prompts to Anthropic Claude 3 to extract parameters, maps them, and dynamically loads the respective `.json`, `.keras`, or `.statsmodels` artifact from the `/models` directory.
 3.  **`streamlit_app.py`**: The frontend dashboard that coordinates user inputs and visualizes the generated predictions.
+
+## 🧠 Model Training & Clustering Flow
+
+```mermaid
+graph TD
+    Raw[(Raw Time-series Data)] --> Scale[Standard Scaler]
+    Scale --> PCA[PCA Feature Extraction]
+    PCA --> KMeans[KMeans Clustering K=6]
+    
+    KMeans --> C0[Cluster 0: Stable Aggregates]
+    KMeans --> C1[Cluster 1: Sharp Dips]
+    KMeans --> C2[Cluster 2: Baseline Users]
+    KMeans --> C3[Cluster 3: Fluctuating]
+    KMeans --> C4[Cluster 4: Dense Non-linear]
+    KMeans --> C5[Cluster 5: Low Usage]
+    
+    C0 & C2 & C3 & C5 --> Prophet[Prophet Model]
+    C1 --> SARIMA[SARIMA Model]
+    C4 --> LSTM[LSTM Deep Learning Model]
+    
+    Prophet & SARIMA & LSTM --> Export[(Saved Models /artifacts)]
+```
 
 ---
 *Built for the Second Deliverable.*
