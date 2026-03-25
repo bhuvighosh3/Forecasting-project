@@ -1,6 +1,6 @@
 # VoltForecast AI - Second Deliverable
 
-**🔗 [Live Dashboard](https://share.streamlit.io/)** *(Replace with your actual Streamlit Cloud URL after deployment)*
+**🔗 [Live Dashboard](https://share.streamlit.io/bhuvighosh3/Forecasting-project/Second-Deliverable/streamlit_app.py)** 
 
 Welcome to the **VoltForecast AI** project! This repository contains a production-ready, natural language interface for electricity consumption forecasting. It leverages advanced clustering techniques, specialized forecasting models (Prophet, SARIMA, LSTM), and the **Anthropic Claude 3** LLM to map user queries to the correct data models dynamically.
 
