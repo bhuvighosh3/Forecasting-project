@@ -1,0 +1,44 @@
+[
+    {
+        "cluster_id": 0,
+        "num_clients": 20,
+        "mean_consumption": 1950.7621663993905,
+        "std_consumption": 657.8475071616135,
+        "description": "Large aggregate (317 clients). Very stable trend with clear daily and weekly patterns. Minimal noise."
+    },
+    {
+        "cluster_id": 1,
+        "num_clients": 344,
+        "mean_consumption": 188.9056613855202,
+        "std_consumption": 69.75569687740688,
+        "description": "Single client (1 client). High base load with sharp frequent dips. Best modeled with SARIMA."
+    },
+    {
+        "cluster_id": 2,
+        "num_clients": 1,
+        "mean_consumption": 37607.98753707506,
+        "std_consumption": 38691.954832140436,
+        "description": "Single client (1 client). Highest variability in the dataset. Profile changes substantially day-to-day."
+    },
+    {
+        "cluster_id": 3,
+        "num_clients": 1,
+        "mean_consumption": 20744.1508741159,
+        "std_consumption": 7339.1079471394805,
+        "description": "Moderate aggregate (9 clients). Balanced profile with symmetric distribution and clear seasonality."
+    },
+    {
+        "cluster_id": 4,
+        "num_clients": 1,
+        "mean_consumption": 8722.355145186253,
+        "std_consumption": 9195.155776759888,
+        "description": "Dense aggregate (40 clients). Clean signal with non-linear temporal patterns. Best modeled with LSTM."
+    },
+    {
+        "cluster_id": 5,
+        "num_clients": 3,
+        "mean_consumption": 8161.219375123038,
+        "std_consumption": 2256.897203332963,
+        "description": "Small aggregate (2 clients). Strong day-of-week variation."
+    }
+]

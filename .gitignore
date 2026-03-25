@@ -1,11 +1,6 @@
 LD2011_2014 2.txt
 __pycache__/
 .venv/
-models/*.statsmodels
-models/*.keras
-models/*.joblib
-models/*.json
-models/
 static/
 .python-version
 uv.lock
