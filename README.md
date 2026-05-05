@@ -146,6 +146,158 @@ statsmodels
 
 ---
 
+flowchart_pipeline = """
+```mermaid
+flowchart TD
+    A[Load Excel File\\nYear 2009-2010 & Year 2010-2011] --> B[Concatenate Sheets]
+    B --> C[Clean Data\\nRemove cancellations, negatives, nulls]
+    C --> D[Normalize Descriptions\\nStrip whitespace, uppercase]
+    D --> E[Filter Products\\nRemove below 10th percentile transaction count]
+    E --> F[Daily Aggregation\\nunits_sold, revenue, avg_price per StockCode per Date]
+    F --> G[Fill Missing Dates\\nZero-fill units_sold, forward-fill avg_price]
+    G --> H[Build Product Feature Matrix\\nn_products x n_days]
+    H --> I[StandardScaler\\nNormalize for clustering only]
+    I --> J{Clustering Algorithms}
+    J --> K[KMeans\\nk = 2 to 18]
+    J --> L[DBSCAN\\neps = 0.5 to 5.0]
+    J --> M[HDBSCAN\\nmin_cluster = 2 to 10]
+    K --> N[Silhouette Score Comparison]
+    L --> N
+    M --> N
+    N --> O[Best: KMeans k=12]
+    O --> P[Assign Cluster Labels to StockCodes]
+    P --> Q[Create 12 Separate Cluster Dataframes]
+    Q --> R[Feature Engineering\\nCalendar, Holidays, Lags, Rolling Stats]
+    R --> S[Statistical Analysis\\nCV%, Stationarity, Seasonality, ACF/PACF]
+    S --> T[Outlier Treatment\\nZ-score threshold 3, replace with median]
+    T --> U[Model Training\\nNBEATS, NHITS, PatchTST, TiDE, TimesNet]
+    U --> V[Hyperparameter Tuning\\ninput_size, max_steps, learning_rate]
+    V --> W[Prophet Forecasting\\nDiagnostics-based tuning per cluster]
+    W --> X[Spearman Feature Selection\\nRetain significant features only]
+    X --> Y[Retrain with Significant Features]
+    Y --> Z[Final Best Model per Cluster]
+    Z --> AA[Multi-Horizon Evaluation\\n30, 60, 90, 180 days]
+    AA --> AB[Rolling Window Evaluation\\nBoxplot SMAPE distribution]
+```
+"""
+
+flowchart_clustering = """
+```mermaid
+flowchart LR
+    A[Product Feature Matrix\\n4769 products x 739 days] --> B[StandardScaler]
+    B --> C[Scaled Matrix\\nmean=0 std=1 per product]
+    C --> D[KMeans k=12]
+    D --> E[12 Cluster Labels]
+    E --> F[Cluster 0\\n4008 products\\nHigh volume, CV 127%]
+    E --> G[Cluster 1\\n6 products\\nModerate, CV 144%]
+    E --> H[Cluster 2\\n1 product\\nSparse, CV 414%]
+    E --> I[Cluster 3\\n1 product\\nHigh CV 295%]
+    E --> J[Cluster 4\\n2 products\\nCV 228%]
+    E --> K[Cluster 5\\n1 product\\nExtreme CV 714%]
+    E --> L[Cluster 6\\n1 product\\nExtreme CV 560%]
+    E --> M[Cluster 7\\n37 products\\nLowest CV 81%]
+    E --> N[Cluster 8\\n10 products\\nNon-stationary CV 250%]
+    E --> O[Cluster 9\\n1 product\\nCV 159%]
+    E --> P[Cluster 10\\n371 products\\nLowest CV 82%]
+    E --> Q[Cluster 11\\n3 products\\nCV 144%]
+```
+"""
+
+flowchart_modelling = """
+```mermaid
+flowchart TD
+    A[Cluster Dataframe\\nStockCode x Date level] --> B[Aggregate to Daily Cluster Total]
+    B --> C[Train-Test Split\\nLast 60 days = Test]
+    C --> D{Model Type}
+    D --> E[NBEATS / PatchTST\\nNo exogenous features\\nPure time series]
+    D --> F[NHITS / TiDE\\nFuture + Historical exogenous\\nCalendar + Lag features]
+    D --> G[TimesNet\\nFuture exogenous only\\nCalendar features]
+    D --> H[Prophet\\nTrend + Seasonality + Holidays\\nDiagnostics-based config]
+    E --> I[Train on 665 days]
+    F --> I
+    G --> I
+    H --> I
+    I --> J[Predict 60 days]
+    J --> K[Compute SMAPE, MAE, RMSE, MASE]
+    K --> L{SMAPE improved?}
+    L -->|Yes| M[Save as Best Model]
+    L -->|No| N[Try next config]
+    N --> I
+    M --> O[Spearman Feature Selection]
+    O --> P[Retrain with Significant Features Only]
+    P --> Q[Final Best Model per Cluster]
+```
+"""
+
+flowchart_evaluation = """
+```mermaid
+flowchart TD
+    A[Final Best Model per Cluster] --> B[Multi-Horizon Evaluation]
+    B --> C[h=30 days\\nShort-term operational]
+    B --> D[h=60 days\\nMedium-term planning]
+    B --> E[h=90 days\\nQuarterly planning]
+    B --> F[h=180 days\\nLong-term strategic]
+    C --> G[SMAPE per horizon]
+    D --> G
+    E --> G
+    F --> G
+    G --> H[Rolling Window Evaluation]
+    H --> I[Late 2010\\nSep-Nov 2010]
+    H --> J[Early 2011\\nJan-Mar 2011]
+    H --> K[Mid 2011\\nApr-Jun 2011]
+    H --> L[Late 2011\\nJul-Sep 2011]
+    I --> M[30-day sub-windows\\n14-day step\\n4-5 SMAPE values]
+    J --> M
+    K --> M
+    L --> M
+    M --> N[Boxplot Distribution\\nSMAPE per window per cluster]
+    N --> O[Identify consistent vs\\nvariable performance periods]
+```
+"""
+
+flowchart_feature = """
+```mermaid
+flowchart LR
+    A[Raw Features] --> B{Feature Type}
+    B --> C[Calendar Features\\nMonth, DayOfWeek\\nWeekOfYear, Quarter]
+    B --> D[Day Type Flags\\nis_weekend, is_saturday\\nis_sunday]
+    B --> E[UK Public Holidays\\nvia holidays library\\n2009-2011]
+    B --> F[Shopping Holidays\\nis_black_friday\\nis_cyber_monday]
+    B --> G[Seasonal Flags\\nis_christmas_period\\nis_year_end, is_january]
+    B --> H[Lag Features\\nlag_1, lag_7, lag_14\\nper StockCode]
+    B --> I[Rolling Statistics\\nrolling_mean_7\\nrolling_std_7]
+    C --> J[Spearman Correlation\\nwith units_sold]
+    D --> J
+    E --> J
+    F --> J
+    G --> J
+    H --> J
+    I --> J
+    J --> K{p-value < 0.05\\nand corr > 0.05?}
+    K -->|Yes| L[Significant Feature\\nIncluded in model]
+    K -->|No| M[Excluded from model]
+```
+"""
+
+# Save all flowcharts to one markdown file
+all_flowcharts = f"""# Pipeline Flowcharts
+
+## 1. Full Pipeline Overview
+{flowchart_pipeline}
+
+## 2. Product Clustering Detail
+{flowchart_clustering}
+
+## 3. Model Training & Selection
+{flowchart_modelling}
+
+## 4. Evaluation Strategy
+{flowchart_evaluation}
+
+## 5. Feature Engineering & Selection
+{flowchart_feature}
+"""
+
 ## How to Run
 
 1. Upload online_retail_II.xlsx to /content/ in Google Colab.
