@@ -146,7 +146,7 @@ statsmodels
 
 ---
 
-flowchart_pipeline = """
+## Architecture Diagram
 ```mermaid
 flowchart TD
     A[Load Excel File\\nYear 2009-2010 & Year 2010-2011] --> B[Concatenate Sheets]
@@ -181,6 +181,7 @@ flowchart TD
 ```
 """
 
+## Model Pipeline
 flowchart_clustering = """
 ```mermaid
 flowchart LR
@@ -277,25 +278,6 @@ flowchart LR
     K -->|Yes| L[Significant Feature\\nIncluded in model]
     K -->|No| M[Excluded from model]
 ```
-"""
-
-# Save all flowcharts to one markdown file
-all_flowcharts = f"""# Pipeline Flowcharts
-
-## 1. Full Pipeline Overview
-{flowchart_pipeline}
-
-## 2. Product Clustering Detail
-{flowchart_clustering}
-
-## 3. Model Training & Selection
-{flowchart_modelling}
-
-## 4. Evaluation Strategy
-{flowchart_evaluation}
-
-## 5. Feature Engineering & Selection
-{flowchart_feature}
 """
 
 ## How to Run
