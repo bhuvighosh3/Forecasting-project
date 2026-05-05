@@ -182,7 +182,6 @@ flowchart TD
 
 
 ## Cluster Pipeline
-flowchart_clustering = """
 ```mermaid
 flowchart LR
     A[Product Feature Matrix\\n4769 products x 739 days] --> B[StandardScaler]
@@ -244,4 +243,3 @@ flowchart TD
 - Cluster 8 is non-stationary (both ADF and KPSS confirm) — flagged for differencing during modelling.
 - Clusters 2 and 5 have extreme sparsity (70% and 89% zero days) making them inherently difficult to forecast.
 - All lag and rolling features are computed per StockCode before aggregating to cluster level to preserve product-specific momentum.
-"""
