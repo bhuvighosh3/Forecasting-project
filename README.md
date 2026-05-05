@@ -133,17 +133,17 @@ High SMAPE values across clusters are expected due to high CV% (83% to 721%) and
 ---
 
 ## Requirements
-pandas
-numpy
-scikit-learn
-hdbscan
-neuralforecast
-prophet
-holidays
-matplotlib
-scipy
-statsmodels
 
+- pandas
+- numpy
+- scikit-learn
+- hdbscan
+- neuralforecast
+- prophet
+- holidays
+- matplotlib
+- scipy
+- statsmodels
 ---
 
 ## Architecture Diagram
@@ -179,9 +179,9 @@ flowchart TD
     Z --> AA[Multi-Horizon Evaluation\\n30, 60, 90, 180 days]
     AA --> AB[Rolling Window Evaluation\\nBoxplot SMAPE distribution]
 ```
-"""
 
-## Model Pipeline
+
+## Cluster Pipeline
 flowchart_clustering = """
 ```mermaid
 flowchart LR
@@ -202,7 +202,6 @@ flowchart LR
     E --> P[Cluster 10\\n371 products\\nLowest CV 82%]
     E --> Q[Cluster 11\\n3 products\\nCV 144%]
 ```
-"""
 
 flowchart_modelling = """
 ```mermaid
@@ -228,8 +227,8 @@ flowchart TD
     O --> P[Retrain with Significant Features Only]
     P --> Q[Final Best Model per Cluster]
 ```
-"""
 
+## Model Pipeline
 flowchart_evaluation = """
 ```mermaid
 flowchart TD
@@ -278,7 +277,6 @@ flowchart LR
     K -->|Yes| L[Significant Feature\\nIncluded in model]
     K -->|No| M[Excluded from model]
 ```
-"""
 
 ## How to Run
 
