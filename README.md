@@ -203,7 +203,7 @@ flowchart LR
     E --> Q[Cluster 11\\n3 products\\nCV 144%]
 ```
 
-flowchart_modelling = """
+## Model Pipeline
 ```mermaid
 flowchart TD
     A[Cluster Dataframe\\nStockCode x Date level] --> B[Aggregate to Daily Cluster Total]
@@ -226,56 +226,6 @@ flowchart TD
     M --> O[Spearman Feature Selection]
     O --> P[Retrain with Significant Features Only]
     P --> Q[Final Best Model per Cluster]
-```
-
-## Model Pipeline
-flowchart_evaluation = """
-```mermaid
-flowchart TD
-    A[Final Best Model per Cluster] --> B[Multi-Horizon Evaluation]
-    B --> C[h=30 days\\nShort-term operational]
-    B --> D[h=60 days\\nMedium-term planning]
-    B --> E[h=90 days\\nQuarterly planning]
-    B --> F[h=180 days\\nLong-term strategic]
-    C --> G[SMAPE per horizon]
-    D --> G
-    E --> G
-    F --> G
-    G --> H[Rolling Window Evaluation]
-    H --> I[Late 2010\\nSep-Nov 2010]
-    H --> J[Early 2011\\nJan-Mar 2011]
-    H --> K[Mid 2011\\nApr-Jun 2011]
-    H --> L[Late 2011\\nJul-Sep 2011]
-    I --> M[30-day sub-windows\\n14-day step\\n4-5 SMAPE values]
-    J --> M
-    K --> M
-    L --> M
-    M --> N[Boxplot Distribution\\nSMAPE per window per cluster]
-    N --> O[Identify consistent vs\\nvariable performance periods]
-```
-"""
-
-flowchart_feature = """
-```mermaid
-flowchart LR
-    A[Raw Features] --> B{Feature Type}
-    B --> C[Calendar Features\\nMonth, DayOfWeek\\nWeekOfYear, Quarter]
-    B --> D[Day Type Flags\\nis_weekend, is_saturday\\nis_sunday]
-    B --> E[UK Public Holidays\\nvia holidays library\\n2009-2011]
-    B --> F[Shopping Holidays\\nis_black_friday\\nis_cyber_monday]
-    B --> G[Seasonal Flags\\nis_christmas_period\\nis_year_end, is_january]
-    B --> H[Lag Features\\nlag_1, lag_7, lag_14\\nper StockCode]
-    B --> I[Rolling Statistics\\nrolling_mean_7\\nrolling_std_7]
-    C --> J[Spearman Correlation\\nwith units_sold]
-    D --> J
-    E --> J
-    F --> J
-    G --> J
-    H --> J
-    I --> J
-    J --> K{p-value < 0.05\\nand corr > 0.05?}
-    K -->|Yes| L[Significant Feature\\nIncluded in model]
-    K -->|No| M[Excluded from model]
 ```
 
 ## How to Run
